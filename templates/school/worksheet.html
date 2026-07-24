@@ -1,0 +1,32 @@
+{% extends "school/school_base.html" %}
+
+{% block title %}{{ gen.title }}{% endblock %}
+
+{% block school_content %}
+<div class="container">
+<div class="worksheet-page">
+
+    <div class="worksheet-head">
+        <h1><span class="worksheet-head__icon">{{ gen.icon }}</span> {{ gen.title }}</h1>
+        <p class="worksheet-head__desc">{{ gen.desc }}</p>
+    </div>
+
+    <div class="worksheet-actions">
+        <a class="btn btn--download"
+           href="{{ url_for('school.worksheet_pdf', lang_code=g.lang_code, key=gen.key) }}">
+            ⬇ {{ _('Завантажити PDF') }}
+        </a>
+        <a class="btn btn--download btn--secondary"
+           href="{{ url_for('school.worksheet_png', lang_code=g.lang_code, key=gen.key) }}">
+            ⬇ {{ _('Завантажити PNG') }}
+        </a>
+    </div>
+
+    <div class="worksheet-preview">
+        <img src="{{ url_for('school.worksheet_preview', lang_code=g.lang_code, key=gen.key) }}"
+             alt="{{ gen.title }}" loading="lazy">
+    </div>
+
+</div>
+</div>
+{% endblock %}

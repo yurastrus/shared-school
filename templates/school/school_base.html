@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<link rel="stylesheet" href="{{ url_for('school.serve_school_static', filename='css/school.css', lang_code=g.lang_code) }}?v=1">
+{% block school_head_extra %}{% endblock %}
+{% endblock %}
+
+{# Shared layout for all School pages: hub back-link + content block. #}
+{# Child templates use {% block school_content %} instead of {% block content %}. #}
+{% block content %}
+    {% if request.endpoint != 'school.overview' %}
+    <a href="{{ url_for('school.overview', lang_code=g.lang_code) }}" class="school-back-link">
+        ← {{ _('До розділів') }}
+    </a>
+    {% endif %}
+    {% block school_content %}{% endblock %}
+{% endblock %}

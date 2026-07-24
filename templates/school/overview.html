@@ -1,0 +1,33 @@
+{% extends "school/school_base.html" %}
+
+{% block title %}{{ _('Навчальні матеріали') }}{% endblock %}
+
+{% block meta_description %}{% if g.lang_code == 'uk' %}Друковані навчальні матеріали для дітей: числові шкали, приклади, таблиця множення. Завантаження у PDF (друк) та PNG.{% else %}Printable learning worksheets for children: number lines, arithmetic, multiplication table. Download as PDF (print) or PNG.{% endif %}{% endblock %}
+
+{% block school_content %}
+<div class="container">
+<div class="module-hub">
+
+    <div class="hub-header">
+        <h1>{{ _('Навчальні матеріали') }}</h1>
+        <p>{{ _('Друковані заготовки для дітей — A4, чорно-білий друк. Виберіть тему, а на її сторінці завантажте PDF (для друку) або PNG.') }}</p>
+    </div>
+
+    {% for group in groups %}
+    <section class="hub-section">
+        <h2 class="hub-section-title">{{ group.icon }} {{ group.title }}</h2>
+        <div class="hub-grid">
+            {% for item in group['items'] %}
+            <a class="hub-card" href="{{ url_for('school.worksheet', lang_code=g.lang_code, key=item.key) }}">
+                <span class="hub-card__icon">{{ item.icon }}</span>
+                <span class="hub-card__title">{{ item.title }}</span>
+                <span class="hub-card__desc">{{ item.desc }}</span>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endfor %}
+
+</div>
+</div>
+{% endblock %}
