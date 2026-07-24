@@ -11,19 +11,55 @@
         <p class="worksheet-head__desc">{{ gen.desc }}</p>
     </div>
 
+    {# ── Settings form: edit key parameters, then "Generate" ── #}
+    <form class="worksheet-form" method="get"
+          action="{{ url_for('school.worksheet', lang_code=g.lang_code, key=gen.key) }}">
+        <input type="hidden" name="submitted" value="1">
+        <h2 class="worksheet-form__title">{{ _('Параметри') }}</h2>
+        <div class="worksheet-form__grid">
+            {% for f in fields %}
+                {% if f.kind == 'bool' %}
+                <label class="field field--check">
+                    <input type="checkbox" name="{{ f.key }}" value="1" {% if f.value %}checked{% endif %}>
+                    <span>{{ f.label }}</span>
+                </label>
+                {% elif f.kind == 'select' %}
+                <label class="field">
+                    <span class="field__label">{{ f.label }}</span>
+                    <select name="{{ f.key }}">
+                        {% for opt in f.options %}
+                        <option value="{{ opt.value }}" {% if opt.selected %}selected{% endif %}>{{ opt.label }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                {% else %}
+                <label class="field">
+                    <span class="field__label">{{ f.label }}</span>
+                    <input type="number" name="{{ f.key }}" value="{{ f.value }}"
+                           {% if f.min is not none %}min="{{ f.min }}"{% endif %}
+                           {% if f.max is not none %}max="{{ f.max }}"{% endif %}>
+                </label>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="worksheet-form__actions">
+            <button type="submit" class="btn btn--download">↻ {{ _('Згенерувати') }}</button>
+        </div>
+    </form>
+
     <div class="worksheet-actions">
-        <a class="btn btn--download"
-           href="{{ url_for('school.worksheet_pdf', lang_code=g.lang_code, key=gen.key) }}">
+        <a class="btn btn--download btn--secondary"
+           href="{{ url_for('school.worksheet_pdf', lang_code=g.lang_code, key=gen.key, **params) }}">
             ⬇ {{ _('Завантажити PDF') }}
         </a>
         <a class="btn btn--download btn--secondary"
-           href="{{ url_for('school.worksheet_png', lang_code=g.lang_code, key=gen.key) }}">
+           href="{{ url_for('school.worksheet_png', lang_code=g.lang_code, key=gen.key, **params) }}">
             ⬇ {{ _('Завантажити PNG') }}
         </a>
     </div>
 
     <div class="worksheet-preview">
-        <img src="{{ url_for('school.worksheet_preview', lang_code=g.lang_code, key=gen.key) }}"
+        <img src="{{ url_for('school.worksheet_preview', lang_code=g.lang_code, key=gen.key, **params) }}"
              alt="{{ gen.title }}" loading="lazy">
     </div>
 

@@ -18,6 +18,8 @@ EN = {
         "Printable worksheets for children — A4, black-and-white. Choose a topic, then download it as PDF (for printing) or PNG on its page.",
     "Завантажити PDF": "Download PDF",
     "Завантажити PNG": "Download PNG",
+    "Параметри": "Settings",
+    "Згенерувати": "Generate",
 }
 
 

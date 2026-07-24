@@ -9,7 +9,21 @@ line. A fresh random set is produced on each call unless ``seed`` is given.
 import random
 
 from .base import new_page, MINUS
+from .schema import Field
 from ..i18n import gen_labels
+
+FIELDS = (
+    Field("operand_min", "int", 0, {"uk": "Нижня межа чисел", "en": "Lower bound"}, min=-1000, max=1000),
+    Field("operand_max", "int", 20, {"uk": "Верхня межа чисел", "en": "Upper bound"}, min=-1000, max=1000),
+    Field("n_problems", "int", 30, {"uk": "Кількість прикладів", "en": "Number of problems"}, min=1, max=90),
+    Field("n_cols", "int", 3, {"uk": "Стовпців", "en": "Columns"}, min=1, max=5),
+    Field("allow_add", "bool", True, {"uk": "Додавання (+)", "en": "Addition (+)"}),
+    Field("allow_sub", "bool", True, {"uk": "Віднімання (−)", "en": "Subtraction (−)"}),
+    Field("allow_negative_results", "bool", True,
+          {"uk": "Дозволити від'ємні результати", "en": "Allow negative results"}),
+    Field("include_answers", "bool", False,
+          {"uk": "Додати сторінку відповідей", "en": "Include answer key"}),
+)
 
 
 def _make_problem(rng, ops, lo, hi, allow_negative):
@@ -31,13 +45,19 @@ def build(operand_min=0, operand_max=20, n_problems=30, n_cols=3,
     rng = random.Random(seed)  # seed=None → fresh set each call
     lbl = gen_labels("arithmetic", lang)
 
+    operand_min, operand_max = int(operand_min), int(operand_max)
+    if operand_max < operand_min:                # keep the range well-formed
+        operand_min, operand_max = operand_max, operand_min
+    n_problems = max(1, int(n_problems))
+    n_cols = max(1, int(n_cols))
+
     ops = []
     if allow_add:
         ops.append("+")
     if allow_sub:
         ops.append("-")
     if not ops:
-        raise ValueError("Треба увімкнути хоча б одну дію (allow_add або allow_sub).")
+        ops = ["+"]  # neither ticked → fall back to addition (never 500)
 
     problems = [
         _make_problem(rng, ops, operand_min, operand_max, allow_negative_results)

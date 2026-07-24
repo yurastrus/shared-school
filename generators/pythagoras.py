@@ -4,11 +4,24 @@
 Python port of ``pythagoras_table.R``.
 """
 from .base import new_page
+from .schema import Field
 from ..i18n import gen_labels
+
+FIELDS = (
+    Field("n_min", "int", 1, {"uk": "Від", "en": "From"}, min=1, max=20),
+    Field("n_max", "int", 10, {"uk": "До", "en": "To"}, min=1, max=20),
+    Field("mode", "select", "both", {"uk": "Версія", "en": "Version"},
+          options=(("both", {"uk": "Обидві сторінки", "en": "Both pages"}),
+                   ("blind", {"uk": "Сліпа (заповни сам)", "en": "Blank (fill in)"}),
+                   ("full", {"uk": "Заповнена", "en": "Filled in"}))),
+)
 
 
 def build(n_min=1, n_max=10, mode="both", lang="uk", **_):
     """mode: "full" (filled), "blind" (blank), "both" (blank page then filled)."""
+    n_min, n_max = int(n_min), int(n_max)
+    if n_max < n_min:
+        n_min, n_max = n_max, n_min
     factors = list(range(n_min, n_max + 1))
     lbl = gen_labels("pythagoras", lang)
     pages = {"full": [True], "blind": [False], "both": [False, True]}.get(mode, [False, True])
