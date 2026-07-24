@@ -64,14 +64,14 @@ def build(operand_min=0, operand_max=20, n_problems=30, n_cols=3,
         for _ in range(n_problems)
     ]
 
-    figures = [_draw_sheet(problems, n_cols, lbl, show_answers=False)]
+    figures = [_draw_sheet(problems, n_cols, lbl, lang, show_answers=False)]
     if include_answers:
-        figures.append(_draw_sheet(problems, n_cols, lbl, show_answers=True))
+        figures.append(_draw_sheet(problems, n_cols, lbl, lang, show_answers=True))
     return figures
 
 
-def _draw_sheet(problems, n_cols, lbl, show_answers):
-    fig, ax = new_page(landscape=False)
+def _draw_sheet(problems, n_cols, lbl, lang, show_answers):
+    fig, ax = new_page(landscape=False, lang=lang)
 
     ttl = f"{lbl['sheet_title']}  —  {lbl['answers']}" if show_answers else lbl["sheet_title"]
     ax.text(0.5, 0.975, ttl, ha="center", va="center", fontsize=17, fontweight="bold")

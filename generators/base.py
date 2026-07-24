@@ -31,11 +31,14 @@ rcParams["ps.fonttype"] = 42
 MINUS = "−"
 
 
-def new_page(landscape=False, full_bleed=True):
+def new_page(landscape=False, full_bleed=True, lang="uk"):
     """Return (fig, ax) for one A4 page with a unit [0,1]×[0,1] coordinate box.
 
     full_bleed keeps a tiny margin so strokes at the very edge are not clipped.
+    Every page gets a small attribution stamped in the bottom-right corner.
     """
+    from ..i18n import credit
+
     w, h = (A4_H_IN, A4_W_IN) if landscape else (A4_W_IN, A4_H_IN)
     fig = plt.figure(figsize=(w, h))
     margin = 0.012 if full_bleed else 0.0
@@ -43,6 +46,9 @@ def new_page(landscape=False, full_bleed=True):
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.set_axis_off()
+    # Subtle corner credit (figure coords → independent of the axes' data range).
+    fig.text(0.992, 0.006, credit(lang), ha="right", va="bottom",
+             fontsize=6, color="0.5")
     return fig, ax
 
 

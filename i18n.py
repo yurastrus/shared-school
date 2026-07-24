@@ -23,6 +23,17 @@ EN = {
 }
 
 
+# Small attribution stamped in the corner of every generated sheet.
+CREDIT = {
+    "uk": "Згенеровано на yurastrus.dev",
+    "en": "Generated at yurastrus.dev",
+}
+
+
+def credit(lang):
+    return CREDIT.get(lang, CREDIT["uk"])
+
+
 def ui(text, lang):
     """Translate a UI string; unknown strings return None so the caller can
     fall back to the host flask-babel catalogue."""

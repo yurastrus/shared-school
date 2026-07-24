@@ -25,11 +25,11 @@ def build(n_min=1, n_max=10, mode="both", lang="uk", **_):
     factors = list(range(n_min, n_max + 1))
     lbl = gen_labels("pythagoras", lang)
     pages = {"full": [True], "blind": [False], "both": [False, True]}.get(mode, [False, True])
-    return [_draw_table(factors, fill, lbl) for fill in pages]
+    return [_draw_table(factors, fill, lbl, lang) for fill in pages]
 
 
-def _draw_table(factors, fill, lbl):
-    fig, ax = new_page(landscape=False)
+def _draw_table(factors, fill, lbl, lang):
+    fig, ax = new_page(landscape=False, lang=lang)
     n = len(factors)
 
     ax.text(0.5, 0.965, lbl["sheet_title"], ha="center", va="center", fontsize=17, fontweight="bold")

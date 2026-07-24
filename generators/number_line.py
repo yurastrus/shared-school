@@ -14,7 +14,7 @@ FIELDS = (
 )
 
 
-def build(min_val=-20, max_val=20, step=1, n_lines=7, **_):
+def build(min_val=-20, max_val=20, step=1, n_lines=7, lang="uk", **_):
     """Return a one-page list of Figures (landscape A4)."""
     # Guards: keep the range valid and the tick count sane regardless of input.
     min_val, max_val, step, n_lines = int(min_val), int(max_val), int(step), int(n_lines)
@@ -26,7 +26,7 @@ def build(min_val=-20, max_val=20, step=1, n_lines=7, **_):
     if span // step > 400:                       # avoid an unreadable/huge line
         step = -(-span // 400)                   # ceil division
 
-    fig, ax = new_page(landscape=True)
+    fig, ax = new_page(landscape=True, lang=lang)
 
     pad = max(1, step) * 2  # room for the arrowheads past the outermost numbers
     ax.set_xlim(min_val - pad, max_val + pad)
